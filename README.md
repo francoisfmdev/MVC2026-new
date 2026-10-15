@@ -1,43 +1,87 @@
 # Framework MVC pédagogique (PHP ^8.2)
 
-**Cours complet (à lire dans l’ordre) :** [docs/cours.md](docs/cours.md)
+Framework minimaliste pour l'enseignement : AltoRouter, Twig, PDO / QueryBuilder (`toSql()`), **sans ORM** et **sans facades**. PHP cible : **^8.2**.
 
-Framework minimaliste pour l’enseignement : AltoRouter, Twig, PDO / QueryBuilder (`toSql()`), **sans ORM** et **sans facades**. PHP **^8.2**.
+## Documentation
 
-## Prérequis
+- Guide d'initialisation : [docs/initialisation.md](docs/initialisation.md)
+- Cours complet : [docs/cours.md](docs/cours.md)
 
-- PHP ^8.2 (`pdo_mysql`, `mbstring`, `json`) — XAMPP 8.2 convient
-- Composer
-- MariaDB / MySQL (phpMyAdmin)
+## Démarrage rapide
 
-## 1. Installation XAMPP (recommandé)
+### XAMPP
 
-1. Copier le projet dans `C:\xampp\htdocs\framework`.
-2. `composer install` puis `copy .env.example .env`
-3. `.env` : `APP_BASE_PATH=/framework`, `DB_USER=root`, `DB_PASS=` vide, `DB_NAME=framework`
-4. Créer la base `framework` dans phpMyAdmin.
-5. Si une ancienne table `users` existe **sans** `password_hash` : supprimer la base et la recréer.
-6. `C:\xampp\php\php.exe framework migrate`
-7. [http://localhost/framework/](http://localhost/framework/) — inscription, puis [tâches](http://localhost/framework/todos)
+1. Copier le projet dans `C:\xampp\htdocs\monapp`
+2. Installer les dépendances :
 
-## 2. Docker (optionnel)
+```bash
+composer install
+copy .env.example .env
+```
 
-MariaDB hôte **3307** (évite le conflit XAMPP 3306).
+3. Configurer `.env` :
+
+```dotenv
+APP_DEBUG=true
+APP_BASE_PATH=/monapp
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_NAME=monapp
+DB_USER=root
+DB_PASS=
+```
+
+4. Créer la base `monapp`
+5. Exécuter les migrations :
+
+```bash
+C:\xampp\php\php.exe framework migrate
+```
+
+6. Ouvrir :
+
+[`http://localhost/monapp/`](http://localhost/monapp/)
+
+### Docker
 
 ```bash
 docker compose up -d --build
 docker compose exec app php framework migrate
 ```
 
-[http://localhost:8080](http://localhost:8080) — `APP_BASE_PATH` vide.
+Application disponible sur [`http://localhost:8080`](http://localhost:8080) avec `APP_BASE_PATH=` vide.
 
-## 3. Serveur PHP intégré (optionnel)
+### Serveur PHP intégré
 
-`APP_BASE_PATH` vide, puis `php -S localhost:8000 -t public`.
+Laisser `APP_BASE_PATH=` vide, puis lancer :
 
-## Commandes CLI
+```bash
+php -S localhost:8000 -t public
+```
+
+## Fonctionnalités actuelles
+
+- authentification web par session
+- authentification API par jeton Bearer
+- gestion des utilisateurs
+- gestion des todos
+- gestion des teams
+
+## Base de données
+
+Le dépôt contient les migrations pour reconstruire l'état actuel du schéma :
+
+- `users`
+- ajout de `role` et `job` sur `users`
+- `api_tokens`
+- `todos`
+- `teams`
+- `userteam`
+
+## Commandes utiles
 
 ```text
+php framework migrate
 php framework make:model Article --migration --controller --view
 php framework make:model Article --controller --api
 php framework make:controller Nom
@@ -46,32 +90,7 @@ php framework make:dto Nom
 php framework make:view articles/index
 php framework make:migration create_posts_table
 php framework make:middleware Auth
-php framework migrate
+composer test
 ```
 
-Les routes **ne sont pas** générées : les ajouter dans `config/routes_web.php` et/ou `config/routes_api.php`.
-
-## Migrations
-
-Créer un fichier (SQL à éditer dans `database/migrations/`) :
-
-```bash
-php framework make:migration create_notes_table
-```
-
-Ou avec le modèle : `php framework make:model Note --migration`.
-
-Appliquer les fichiers **en attente** (ceux pas encore dans la table `migrations`) :
-
-```bash
-php framework migrate
-```
-
-## Tests
-
-`composer test` — les tests Feature (Todo) sont ignorés sans MySQL `framework_test`.
-
-## API
-
-`POST /api/register` et `POST /api/login` renvoient `{ user, token }`.  
-Les todos : `Authorization: Bearer <token>`.
+Les routes ne sont pas générées automatiquement : elles restent à déclarer dans `config/routes_web.php` et `config/routes_api.php`.
