@@ -36,7 +36,7 @@ final class AuthMiddleware implements Middleware
         }
 
         if (!$this->auth->check()) {
-            $base = rtrim((string) Env::get('APP_BASE_PATH', ''), '/');
+            $base = Env::basePath();
             header('Location: ' . $base . '/login');
             exit;
         }

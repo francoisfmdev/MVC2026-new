@@ -21,6 +21,10 @@ return [
 
     ['GET', '/users', 'App\\Web\\Controllers\\UserController#index', ['middleware' => [AuthMiddleware::class]]],
 
+    ["GET","/teams", "App\\Web\\Controllers\\TeamController#index",["middleware"=> [AuthMiddleware::class]]],
+    ["GET","/teams/create", "App\\Web\\Controllers\\TeamController#create",["middleware"=> [AuthMiddleware::class]]],
+    ["POST","/teams", "App\\Web\\Controllers\\TeamController#store",["middleware"=> [AuthMiddleware::class]]],
+
     ['GET', '/todos', 'App\\Web\\Controllers\\TodoController#index', ['middleware' => [AuthMiddleware::class]]],
     ['GET', '/todos/create', 'App\\Web\\Controllers\\TodoController#create', ['middleware' => [AuthMiddleware::class]]],
     ['POST', '/todos', 'App\\Web\\Controllers\\TodoController#store', ['middleware' => [AuthMiddleware::class]]],

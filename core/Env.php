@@ -71,6 +71,24 @@ final class Env
         return self::$vars[$key] ?? $default;
     }
 
+    /**
+     * Base path normalisé pour les URLs internes.
+     * Accepte "monapp" ou "/monapp" dans .env et retourne toujours "/monapp".
+     */
+    public static function basePath(): string
+    {
+        $base = trim((string) self::get('APP_BASE_PATH', ''));
+        if ($base === '' || $base === '/') {
+            return '';
+        }
+
+        if (!str_starts_with($base, '/')) {
+            $base = '/' . $base;
+        }
+
+        return rtrim($base, '/');
+    }
+
     /** Indique si load() a déjà réussi (utile en tests). */
     public static function isLoaded(): bool
     {

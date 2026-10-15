@@ -71,7 +71,7 @@ final class Request
         $path = parse_url($uri, PHP_URL_PATH);
         $path = is_string($path) ? $path : '/';
 
-        $base = rtrim((string) Env::get('APP_BASE_PATH', ''), '/');
+        $base = Env::basePath();
         if ($base !== '' && ($path === $base || str_starts_with($path, $base . '/'))) {
             $path = substr($path, strlen($base)) ?: '/';
         }

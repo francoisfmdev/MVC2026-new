@@ -34,7 +34,7 @@ abstract class Controller
     /** En-tête Location. $path est une route interne (« /todos »), pas une URL absolue. */
     protected function redirect(string $path): never
     {
-        $base = rtrim((string) Env::get('APP_BASE_PATH', ''), '/');
+        $base = Env::basePath();
         if (!str_starts_with($path, '/')) {
             $path = '/' . $path;
         }

@@ -15,4 +15,6 @@ final class UserDTO extends DTO
     public int $id;
     public string $username;
     public string $email;
+    public ?string $role = null;
+    public ?string $job = null;
 }

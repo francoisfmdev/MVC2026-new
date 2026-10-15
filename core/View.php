@@ -56,7 +56,7 @@ final class View
      */
     public function url(string $path): string
     {
-        $base = rtrim((string) Env::get('APP_BASE_PATH', ''), '/');
+        $base = Env::basePath();
         if (!str_starts_with($path, '/')) {
             $path = '/' . $path;
         }
