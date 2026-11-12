@@ -21,6 +21,10 @@ final class RoutesTest extends TestCase
         $this->assertNotFalse($alto->match('/', 'GET'));
         $this->assertNotFalse($alto->match('/login', 'GET'));
         $this->assertNotFalse($alto->match('/users', 'GET'));
+        $this->assertNotFalse($alto->match('/teams', 'GET'));
+        $this->assertNotFalse($alto->match('/teams/3', 'GET'));
+        $this->assertNotFalse($alto->match('/teams/3/members', 'POST'));
+        $this->assertNotFalse($alto->match('/teams/3/members/4/delete', 'POST'));
         $this->assertNotFalse($alto->match('/todos', 'GET'));
         $this->assertNotFalse($alto->match('/todos/12', 'GET'));
         $this->assertNotFalse($alto->match('/api/login', 'POST'));
