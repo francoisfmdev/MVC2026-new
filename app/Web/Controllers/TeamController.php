@@ -16,15 +16,7 @@ final class TeamController extends Controller
 {
     public function index(Request $request): void
     {
-        $teams = Team::query(
-            '
-                SELECT teams.id, teams.name, COUNT(userteam.id) AS members_count
-                FROM teams
-                LEFT JOIN userteam ON userteam.team_id = teams.id
-                GROUP BY teams.id, teams.name
-                ORDER BY teams.name ASC
-            '
-        );
+        $teams = Team::getAndCountTeam();
 
         $this->view('teams/index.twig', ['teams' => $teams]);
     }
@@ -136,16 +128,7 @@ final class TeamController extends Controller
      */
     private function membersForTeam(int $teamId): array
     {
-        return User::query(
-            '
-                SELECT users.id, users.username, users.email, users.role, users.job
-                FROM users
-                INNER JOIN userteam ON userteam.user_id = users.id
-                WHERE userteam.team_id = ?
-                ORDER BY users.username ASC
-            ',
-            [$teamId]
-        );
+        return User::membersForTeam($teamId);
     }
 
     /**
@@ -153,18 +136,6 @@ final class TeamController extends Controller
      */
     private function availableUsersForTeam(int $teamId): array
     {
-        return User::query(
-            '
-                SELECT users.id, users.username, users.email
-                FROM users
-                WHERE users.id NOT IN (
-                    SELECT userteam.user_id
-                    FROM userteam
-                    WHERE userteam.team_id = ?
-                )
-                ORDER BY users.username ASC
-            ',
-            [$teamId]
-        );
+        return User::availableUsersForTeam([$teamId]);
     }
 }
