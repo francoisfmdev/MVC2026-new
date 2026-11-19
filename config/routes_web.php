@@ -13,14 +13,21 @@ use App\Middleware\LoggingMiddleware;
 return [
     ['GET', '/', 'App\\Web\\Controllers\\HomeController#index', ['middleware' => [LoggingMiddleware::class]]],
 
+    // Authentification
     ['GET', '/login', 'App\\Web\\Controllers\\AuthController#showLogin'],
     ['POST', '/login', 'App\\Web\\Controllers\\AuthController#login'],
     ['GET', '/register', 'App\\Web\\Controllers\\AuthController#showRegister'],
     ['POST', '/register', 'App\\Web\\Controllers\\AuthController#register'],
     ['POST', '/logout', 'App\\Web\\Controllers\\AuthController#logout', ['middleware' => [AuthMiddleware::class]]],
-
+    
+    // Gestion des utilisateurs
     ['GET', '/users', 'App\\Web\\Controllers\\UserController#index', ['middleware' => [AuthMiddleware::class]]],
 
+    ['GET', '/adduser', 'App\\Web\\Controllers\\UserController#create', ['middleware' => [AuthMiddleware::class]]],
+    ['POST', '/users', 'App\\Web\\Controllers\\UserController#store', ['middleware' => [AuthMiddleware::class]]],
+    ["POST","/deleteuser", "App\\Web\\Controllers\\UserController#remove",["middleware"=> [AuthMiddleware::class]]],
+    
+    // gestion des équipes 
     ["GET","/teams", "App\\Web\\Controllers\\TeamController#index",["middleware"=> [AuthMiddleware::class]]],
     ["GET","/teams/create", "App\\Web\\Controllers\\TeamController#create",["middleware"=> [AuthMiddleware::class]]],
     ["POST","/teams", "App\\Web\\Controllers\\TeamController#store",["middleware"=> [AuthMiddleware::class]]],

@@ -43,4 +43,10 @@ final class User extends Model
             [$teamId]
         );
     }
+    public static function getUserAndJob(){
+        return  self::table()
+            ->select('id', 'username', 'email', 'created_at','role','job', 'updated_at')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+    }
 }

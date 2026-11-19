@@ -12,4 +12,6 @@ final class RegisterDTO extends DTO
     public string $username;
     public string $email;
     public string $password;
+    public ?string $role = "ouvrier";
+    public ?string $job;
 }
