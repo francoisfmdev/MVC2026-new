@@ -66,7 +66,18 @@ final class UserController extends Controller
 
      public function remove(Request $request): void
      {
-        
+        $user = $request->all();
+         
+        $id_user = (int) $user["id_user"];
+
+         if (User::find($id_user) === null) {
+            $this->session->flash('error', 'Utilisteur introuvable');
+            $this->redirect('/users');
+        }
+
+        User::delete($id_user);
+        $this->session->flash('success', 'Utilisateur supprimée.');
+        $this->redirect('/users');
      }
 
 }

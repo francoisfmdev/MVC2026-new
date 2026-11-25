@@ -128,6 +128,7 @@ final class TeamController extends Controller
      */
     private function membersForTeam(int $teamId): array
     {
+        
         return User::membersForTeam($teamId);
     }
 

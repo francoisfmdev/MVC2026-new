@@ -23,7 +23,7 @@ final class User extends Model
                 INNER JOIN userteam ON userteam.user_id = users.id
                 WHERE userteam.team_id = ?
                 ORDER BY users.username ASC
-            ',
+            ',[$teamId]
            
         );
     }
