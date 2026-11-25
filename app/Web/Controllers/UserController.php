@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Web\Controllers;
 
 use App\Models\User;
+use App\Models\Job;
 use Core\Controller;
 use Core\Request;
 use App\DTO\RegisterDTO;
@@ -21,8 +22,12 @@ final class UserController extends Controller
 
       public function create(Request $request): void
     {
+
+        $jobs = Job::all();
+
         $this->view('users/add.twig', [
             'action' => $this->view->url('/users'),
+            'jobs'=>$jobs
         ]);
     }
 
@@ -50,12 +55,13 @@ final class UserController extends Controller
             $this->redirect('/adduser');
         } 
         
+
          User::insert([
             'username' => $input->username,
             'email' => $input->email,
             'password_hash' => password_hash($input->password, PASSWORD_DEFAULT),
             'role' => $input->role,
-            'job' => $input->job
+            'job_id' => $input->job
 
         ]);
         

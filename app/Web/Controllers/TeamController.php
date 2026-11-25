@@ -23,6 +23,8 @@ final class TeamController extends Controller
 
     public function create(Request $request): void
     {
+
+            
         $this->view('teams/add.twig', [
             'action' => $this->view->url('/teams'),
         ]);
@@ -137,6 +139,6 @@ final class TeamController extends Controller
      */
     private function availableUsersForTeam(int $teamId): array
     {
-        return User::availableUsersForTeam([$teamId]);
+        return User::availableUsersForTeam($teamId);
     }
 }

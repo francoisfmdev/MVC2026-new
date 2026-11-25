@@ -16,19 +16,17 @@ final class User extends Model
 
     public static function membersForTeam(int $teamId){
 
-        return  self::query(
-            '
-                SELECT users.id, users.username, users.email, users.role, users.job
-                FROM users
-                INNER JOIN userteam ON userteam.user_id = users.id
-                WHERE userteam.team_id = ?
-                ORDER BY users.username ASC
-            ',[$teamId]
-           
-        );
+        return self::query('
+        SELECT u.id, u.username, u.email, u.role, j.job
+        FROM users u
+        INNER JOIN userteam ut ON ut.user_id = u.id
+        LEFT JOIN jobs j ON j.id = u.job_id
+        WHERE ut.team_id = ?
+        ORDER BY u.username ASC
+    ',[$teamId]);
     }
 
-    public static function availableUsersForTeam(array $teamId){
+    public static function availableUsersForTeam(int $teamId){
       return self::query(
             '
                 SELECT users.id, users.username, users.email
@@ -44,9 +42,19 @@ final class User extends Model
         );
     }
     public static function getUserAndJob(){
-        return  self::table()
-            ->select('id', 'username', 'email', 'created_at','role','job', 'updated_at')
-            ->orderBy('created_at', 'DESC')
-            ->get();
+
+            return self::query("SELECT
+                                u.id,
+                                u.username,
+                                u.email,
+                                u.created_at,
+                                u.role,
+                                j.job,
+                                u.updated_at
+                                FROM users u
+                                LEFT JOIN jobs j ON j.id = u.job_id
+                                ORDER BY u.created_at DESC;");
+
+        
     }
 }

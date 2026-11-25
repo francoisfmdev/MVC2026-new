@@ -23,7 +23,12 @@
         </select>
         
         <label for="job"> Job :</label>
-        <input id="job" type="text" name="job" required>
+        
+        <select id="job" type="text" name="job" required>
+            {% for job in jobs %} 
+            <option value="{{ job.id }}"> {{ job.job }} </option>
+             {% endfor %} 
+        </select>
         
         <button type="submit">Créer un utilisateur</button>
        
